@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maison Task Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/styles/main.css">
+</head>
+<body>
+<div class="page-shell">
+  <header class="site-header">
+    <div class="brand-lockup">
+      <p class="brand-lockup__eyebrow">Vanilla JavaScript Project</p>
+      <a class="brand-lockup__title" href="/">Maison Task Planner</a>
+    </div>
+
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#planner">Planner</a>
+      <a href="#board">Board</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main class="site-main">
+    <section class="hero-section">
+      <div class="hero-copy">
+        <p class="hero-copy__eyebrow">Editorial Task Management</p>
+        <h1>Quiet structure for daily work.</h1>
+        <p class="hero-copy__text">A full-page planner focused on typography, order, and clarity. Create tasks, filter them instantly, and keep your workspace refined and responsive.</p>
+      </div>
+
+      <div class="hero-statements">
+        <article class="hero-note">
+          <p class="hero-note__label">Built with</p>
+          <p class="hero-note__value">DOM, ES Modules, Events</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="planner-layout">
+      <aside class="planner-panel" id="planner">
+        <section class="form-panel">
+          <div class="section-heading">
+            <p class="section-heading__eyebrow">Create</p>
+            <h2>New task entry</h2>
+            <p>Compose a task with category, priority, and due date.</p>
+          </div>
+
+          <form id="create-task-form" class="task-form" novalidate>
+            <label class="field field--full">
+              <span>Title</span>
+              <input type="text" id="title" name="title" placeholder="Prepare DOM practice demo" maxlength="80" required>
+            </label>
+
+            <label class="field">
+              <span>Category</span>
+              <select id="category" name="category" required>
+                <option value="Study">Study</option>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Health">Health</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Priority</span>
+              <select id="priority" name="priority" required>
+                <option value="High">High</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </label>
+
+            <label class="field field--full">
+              <span>Due Date</span>
+              <input type="date" id="dueDate" name="dueDate" required>
+            </label>
+
+            <button type="submit" class="btn btn--primary btn--wide">Add Task</button>
+            <p id="create-error" class="form-error" role="alert" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="editorial-panel" id="about">
+          <div class="section-heading">
+            <p class="section-heading__eyebrow">Principles</p>
+            <h2>Minimal, structured, deliberate.</h2>
+          </div>
+
+          <ul class="editorial-list">
+            <li>Semantic page structure with header, main, and footer sections.</li>
+            <li>Task creation, editing, filtering, sorting, and local persistence.</li>
+            <li>Monochrome interface inspired by luxury editorial layouts.</li>
+          </ul>
+        </section>
+      </aside>
+
+      <section class="board-panel" id="board">
+        <header class="board-header">
+          <div class="section-heading section-heading--compact">
+            <p class="section-heading__eyebrow">Overview</p>
+            <h2>Task board</h2>
+            <p>Monitor the state of your work and refine the list in real time.</p>
+          </div>
+          <div class="stats stats--hero" id="stats"></div>
+        </header>
+
+        <section class="controls-panel">
+          <div class="toolbar">
+            <label class="field field--grow">
+              <span>Search</span>
+              <input type="search" id="search" placeholder="Find tasks by title, category, or priority...">
+            </label>
+
+            <label class="field field--sort">
+              <span>Sort</span>
+              <select id="sort">
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+                <option value="dueDate">Due date</option>
+                <option value="priority">Priority</option>
+                <option value="alphabetical">Alphabetical</option>
+              </select>
+            </label>
+
+            <button id="clear-completed" class="btn btn--secondary" type="button">Clear Completed</button>
+          </div>
+
+          <div class="board-filters">
+            <div class="tabs" role="tablist" aria-label="Task filters">
+              <button class="tab tab--active" role="tab" aria-selected="true" data-filter="all" type="button">All</button>
+              <button class="tab" role="tab" aria-selected="false" data-filter="active" type="button">Active</button>
+              <button class="tab" role="tab" aria-selected="false" data-filter="completed" type="button">Completed</button>
+            </div>
+            <p id="result-summary" class="result-summary">Showing all tasks.</p>
+          </div>
+        </section>
+
+        <section class="task-board">
+          <ul id="task-list" class="task-list" aria-live="polite"></ul>
+          <p id="empty-state" class="empty-state">No tasks match the current filters. Try another search or create a new item.</p>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Maison Task Planner</p>
+    <p>Created by Gherta Lilian</p>
+    <p>Individual JavaScript Project</p>
+    <p>Group IAFR2503R</p>
+  </footer>
+</div>
+
+<dialog id="edit-modal" class="modal">
+  <form id="edit-task-form" class="modal__body" novalidate>
+    <header class="modal__header">
+      <div>
+        <p class="section-heading__eyebrow">Edit</p>
+        <h2>Edit Task</h2>
+      </div>
+      <button class="btn btn--secondary" type="button" id="close-modal">Close</button>
+    </header>
+
+    <input type="hidden" id="edit-id" name="id">
+
+    <label class="field field--full">
+      <span>Title</span>
+      <input type="text" id="edit-title" name="title" maxlength="80" required>
+    </label>
+
+    <label class="field">
+      <span>Category</span>
+      <select id="edit-category" name="category" required>
+        <option value="Study">Study</option>
+        <option value="Work">Work</option>
+        <option value="Personal">Personal</option>
+        <option value="Health">Health</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <span>Priority</span>
+      <select id="edit-priority" name="priority" required>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+    </label>
+
+    <label class="field field--full">
+      <span>Due Date</span>
+      <input type="date" id="edit-dueDate" name="dueDate" required>
+    </label>
+
+    <p id="edit-error" class="form-error" role="alert" aria-live="polite"></p>
+
+    <div class="modal__actions">
+      <button class="btn btn--primary" type="submit">Save Changes</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" aria-live="polite"></div>
+
+<script type="module" src="./src/js/main.js"></script>
+</body>
+</html>

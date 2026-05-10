@@ -1,0 +1,12 @@
+{
+  "name": "individualProject",
+  "version": "1.0.0",
+  "description": "Vanilla JS Task Planner with filtering, sorting, validation, and modular architecture.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "echo \"No automated tests configured yet\""
+  },
+  "private": true
+}
